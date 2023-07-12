@@ -1,8 +1,33 @@
+<?php
+session_start();
+$id = $_SESSION['teamID'];
+include "config/config.php";
 
-<!DOCTYPE html>
+$fetch_query = "SELECT * FROM customer where `customer_id`='$id' ";
+
+$data_register = mysqli_query($myConnection, $fetch_query);
+
+if(mysqli_num_rows($data_register)>0){
+
+    $row_data = mysqli_fetch_array($data_register); 
+        
+} else {
+    echo "Record Not found";
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+
+  
     <style type="text/css">
         div{
             width: 25%;
@@ -26,30 +51,62 @@
     <meta charset="utf-8">
     <title> E-Commerce Website</title>
 </head>
-<body style="background-color: whitesmoke;">
+<body style="background-color: whitesmoke;" >
 <nav>
         <ul>
             <li><a href="#">Home</a></li>
             <li><a href="#">Products</a></li>
-            <li><a href="#">Cart</a></li>
+            <li ><a id="card" href="#">Cart</a></li>
             <li><a href="#">Contact</a></li>
+            <li style="margin-left: 60%;"><a href="#">Welcome! <?php echo $row_data['customer_name'] ?></a><i class="bi bi-person-circle"></i></li>
+            
         </ul>
     </nav>
-<h2 style="background-color:blue;color: white;text-align: center;">E-Commerce Front-End Website</h2>
-<table style="color:white;background-color:green;width: 100%;">
-    <th><select><option value="Mobile">MOBILE</option></select></th>
-    <th><select><option value="Laplop">LAPTOP</option></select></th>
-    <th><select><option value="Cloth">CLOTHS</option></select></th>
-    <th><select><option value="Toy">TOYS</option></select></th>
-    <th><select><option value="Men">MEN</option></select></th>
-    <th><select><option value="Women">WOMEN</option></select></th>
-    <th><select><option value="Book">BOOKS</option></select></th>
-</table>
+<!-- <h2 style="background-color:blue;color: white;text-align: center;">E-Commerce Front-End Website</h2> -->
+<header class="header-second">
 
+        <nav>
+            <ul id="top-menu">
+                <li><a href="#">Mobile</a></li>
+                <li><a href="#">Laptop</a></li>
+                <li><a href="#">Cloth</a></li>
+                <li><a href="#">Toy</a></li>
+                <li class="dropdown">
+                    <a href="#">Men</a>
+                    <div class="dropdown-content">
+                        <a href="#">Shirts</a>
+                        <a href="#">Pants</a>
+                        <a href="#">Shoes</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Women</a>
+                    <div class="dropdown-content">
+                        <a href="#">Dresses</a>
+                        <a href="#">Tops</a>
+                        <a href="#">Skirts</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#">Books</a>
+                    <div class="dropdown-content">
+                        <a href="#">Fiction</a>
+                        <a href="#">Non-fiction</a>
+                        <a href="#">Biography</a>
+                    </div>
+                </li>
+                <li><a href="#">All</a></li>
+            </ul>
+        </nav>
+    </header>
+    <!-- <section> </section> -->
+    <!-- <p  id="content-id"></p> -->
+    <pre  id="content-id"></pre>
 
-<div style="height: 100%;">
+    <div style="height: 100%;">
     <h2>Filter</h2>
     <form>
+        <!-- <div id="content-id"></div> -->
         <p><h4>PRICE</h4></p>
         <input type="checkbox" name="x[]" value="h1">under - 5000
         <input type="checkbox" name="x[]" value="h1"> 5000 - 7500
@@ -140,10 +197,12 @@
 
     </form>
 </div>
-<div style="height: 20%;">
-    <caption><h2>Product Name</h2></caption>
-    <p><h4>Apple </h4></p>
-    <p>128 GB ROM<br>
+
+
+<div class="description" >
+    <caption><h3>Product Name</h3></caption>
+    <p><h4 id="product-name-1">Apple </h4></p>
+    <p id="desc-1">128 GB ROM<br>
         15.49 cm (6.1 inch) Super Retina XDR Display<br>
         12MP + 12MP | 12MP Front Camera<br>
         A14 Bionic Chip with Next Generation Neural Engine Processor<br>
@@ -151,71 +210,53 @@
         Industry-leading IP68 Water Resistance<br>
         All Screen OLED Display<br>
         12MP TrueDepth Front Camera with Night Mode, 4K Dolby Vision HDR Recording<br>
-        <a href="FirstPage.html">See more</a>
-    <pre>
-
-
-			</pre>
-
-
     </p>
-</div>
-<div style="height:20%">
-    <caption><h2>Product Image</h2></caption>
-    <img src="https://rukminim1.flixcart.com/image/416/416/kg8avm80/mobile/j/f/9/apple-iphone-12-dummyapplefsn-original-imafwg8dkyh2zgrh.jpeg?q=70">
-    <h3 style="color: blue;">Price - 115999</h3>
-    <h3 style="color: indianred;background-color: yellow;text-align: center;"><a href="https://www.flipkart.com/apple-iphone-12-red-128-gb/p/itma7bd86885ed98?pid=MOBFWBYZUHPFWQRD&lid=LSTMOBFWBYZUHPFWQRDSKVDRO&marketplace=FLIPKART&q=Apple&store=search.flipkart.com&srno=s_1_6&otracker=search&otracker1=search&fm=organic&iid=faa724b2-6f9a-4519-ac97-58d8c318c44e.MOBFWBYZUHPFWQRD.SEARCH&ppt=None&ppn=None&ssid=t3p63xwt0g0000001631462231248&qH=9f6290f4436e5a23"; alt="Apple">BUY NOW</a></h3>
-</div>
-<hr>
-<div>
+    <a href="FirstPage.html">See more</a>
 
+</div>
+<div class="product-item">
+    <caption><h4>Product Image</h4></caption>
+    <img src="img/apple.webp">
+    <h3 id="" style="color: blue;">Price - <span id="cost-1">115999</span></h3>
+    <button id="product-id-1" class="cart" style="background-color: orange;border:none;color:white"><i class="bi bi-cart3"></i>ADD TO CART</button> <button class="buy" style="background-color: red;color:white;border:none"><i class="bi bi-bag"></i>BUY NOW</button>
+</div>
+
+<div class="description" >
     <p><h4>Samsung</h4></p>
-    <p>6 GB RAM | 128 GB ROM | Expandable Upto 1 TB<br>
-        16.26 cm (6.4 inch) HD+ Display<br>
-        48MP + 8MP + 2MP + 2MP | 13MP Front Camera<br>
-        6000 mAh Lithium-ion Batterys<br>
-        MediaTek Helio G80 Processor</p>
+    <p>6 GB RAM | 128 GB ROM | Expandable Upto 1 TB<br> 16.26 cm (6.4 inch) HD+ Display<br>48MP + 8MP + 2MP + 2MP | 13MP Front Camera<br>6000 mAh Lithium-ion Batterys<br>MediaTek Helio G80 Processor
+    </p>
     <a href="SecondPage.html">See more</a>
-    <pre>
-
-
-
-
-
-
-			</pre>
 </div>
-<div>
-    <img src="https://rukminim1.flixcart.com/image/416/416/kqqykcw0/mobile/n/a/d/galaxy-f22-sm-e225flbdins-samsung-original-imag4z99jwatcqtm.jpeg?q=70">
-    <h3 style="color: blue;">Price - 22599</h3>
-    <h3 style="color: indianred;background-color: yellow;text-align: center;"><a href="https://www.flipkart.com/checkout/init?otracker=search">BUY NOW</a></h3>
+<div class="product-item" >
+<caption><h4>Product Image</h4></caption>
+    <img src="img/samsung.webp">
+    <h3 style="color: blue;">Price - <span> 22599</span></h3>
+    <button id="" class="cart" style="background-color: orange;border:none;color:white"><i class="bi bi-cart3"></i><a>ADD TO CART</a></button> <button class="buy" style="background-color: red;color:white;border:none"><i class="bi bi-bag"></i><a alt="Apple">BUY NOW</a></button>
 
 </div>
-<hr>
-<div>
+<div class="description">
     <p><h4>Black Berry</h4></p>
     <p>4 GB RAM | 64 GB ROM | Expandable Upto 256 GB<br>
         15.21 cm (5.99 inch) Full HD+ Display<br>
         13MP + 13MP | 16MP Front Camera<br>
         4000 mAh Battery<br>
         Qualcomm SDM450 with 64 bit Octa-core 1.8GHz Cortex-A53 Processor<br>
-        <a href="ThirdPage.html">See more</a>
-    <pre>
-
-
-
-
-
-		</pre>
-
     </p>
-</div>
-<div>
-    <img src="https://rukminim1.flixcart.com/image/416/416/jseyoi80/mobile/a/v/g/blackberry-evolve-evolve-original-imafdzvmbegkfjhn.jpeg?q=70">
-    <h3 style="color: blue;">Price - 13950</h3>
-    <h3 style="color: indianred;background-color: yellow;text-align: center;"><a href="https://www.flipkart.com/blackberry-evolve-black-64-gb/p/itmfdwhxj8vpzr2v?pid=MOBFDWBZW6YCXAVG&lid=LSTMOBFDWBZW6YCXAVGHD2TEW&marketplace=FLIPKART&q=blackberry+mobiles&store=tyy%2F4io&srno=s_1_2&otracker=AS_QueryStore_OrganicAutoSuggest_1_3_na_na_ps&otracker1=AS_QueryStore_OrganicAutoSuggest_1_3_na_na_ps&fm=SEARCH&iid=e661e148-9374-4e9d-951c-15ed6baa52e9.MOBFDWBZW6YCXAVG.SEARCH&ppt=sp&ppn=sp&ssid=1s37x1x4kw0000001631462620651&qH=eff2982b2f6fc7da">BUY NOW</a></h3>
+    <a href="ThirdPage.html">See more</a>
 
 </div>
+
+<div class="product-item" >
+<caption><h4>Product Image</h4></caption>
+    <img src="img/black-berry.webp">
+    <h3 style="color: blue;">Price - 13950</h3>
+    <button class="cart" style="background-color: orange;border:none;color:white"><i class="bi bi-cart3"></i><a>ADD TO CART</a></button> <button class="buy" style="background-color: red;color:white;border:none"><i class="bi bi-bag"></i><a alt="Apple">BUY NOW</a></button>
+</div>
+
+
+
+
  
 </body>
+<script type="text/javascript" src="js/script.js"></script>
 </html>
