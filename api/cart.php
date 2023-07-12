@@ -17,11 +17,10 @@ a:hover{text-decoration:none; color:white}
 
 
 <script>
-
 $(document).ready(function () {
     $('#example').DataTable();
-	
 });
+
 </script>
 
 </head>
