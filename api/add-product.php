@@ -4,7 +4,10 @@ include '../config/config.php';
 // if($_POST["action"] == "insert"){
     $name = $_POST['name'];
     $desc = $_POST['desc'];
-    $cost = $_POST['cost'];
+    $quantity = $_POST['quantity'];
+    $cost = $_POST['cost'] *  $quantity;
+    $images = $_POST['images'];
+
 
     // $query = "SELECT * FROM `cart` WHERE `product_id` = '$id'";
     // $result = mysqli_query($myConnection,$query);
@@ -14,13 +17,13 @@ include '../config/config.php';
 
     //         else{
 
-                $insert = "INSERT INTO `cart`(`product_name`,`product_description`,`product_cost`) 
-                VALUES('$name','$desc','$cost')";
+                $insert = "INSERT INTO `cart`(`product_name`,`product_description`,`product_quantity`,`product_cost`,`product_img`) 
+                VALUES('$name','$desc',$quantity,'$cost','$images')";
                 if(mysqli_query($myConnection,$insert)){
-                    echo "Data inserted succussfulyy";
+                    echo "Card add in card menu";
                 }
                 else{
-                     echo "Data not inserted succussfulyy";
+                     echo "Data not added in card";
 
 
                 // }
