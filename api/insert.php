@@ -23,10 +23,10 @@ if($_POST["action"] == "insert"){
                 VALUES('$name','$email','$number','$password','$dob','$address','$gender', '$job')";
                 
                 if(mysqli_query($myConnection,$insert)){
-                    echo "Data inserted succussfulyy";
+                    echo "Card add in card menu";
                 }
                 else{
-                     echo "Data not inserted succussfulyy";
+                     echo "Data not added in card";
 
 
                 }
