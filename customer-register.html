@@ -41,29 +41,34 @@
     <label>Full name</label><span id="nameerr" class="error">* </span><br>
     <input id="name" name="fname" minlength="8" type="text" value="">
     <br>
-    <label>Email</label><span id="emailerr" class="error">* </span><br>
+    <label>Email</label><span id="emailErr" class="error">* </span><br>
     <input id="email" type="email" name="email" value="">
     <br>
-    <label>Phone</label><span id="numbererr" class="error">* </span><br>
+    <label>Phone</label><span id="numberErr" class="error">* </span><br>
     <input id="number" type="text" name="number"  value="">
+     <button type="button" class="btn btn-primary first_box" onclick="sendOtp();">Send OTP</button>
+     <button id="disabled_btn" type="button" class="btn"></button>
+    <input id="otp" class="second_box " name="otp" type="text" style="width: 10%;">
+    <button class="btn btn-primary second_box" type="button" onclick="submit_otp();" >Submit OTP</button>
+
     <br>
-    <label>Password</label><span id="passworderr" class="error">* </span><br>
+    <label>Password</label><span id="passwordErr" class="error">* </span><br>
     <input id="password" type="password" name="password" value="">
     <br>
-    <label>Date of Birth</label><span id="dateerr" class="error">* </span><br>
+    <label>Date of Birth</label><span id="dateErr" class="error">* </span><br>
     <input id="date" type="date" name="dob" value="">
     <br>
-    <label>Address</label><span id="addresserr" class="error">* </span><br>
+    <label>Address</label><span id="addressErr" class="error">* </span><br>
     <input id="address" type="text" name="address" id="address" value=""> 
     <br>
-    <label>Gender</label><span id="gendererr" class="error">* </span><br>
+    <label>Gender</label><span id="genderErr" class="error">* </span><br>
     <span>Male</span><input type="radio" name="gender" value="Male" id="male" class="gender" >
     <span>Female</span><input type="radio" name="gender" value="Female" id="female" class="gender" > <br>
     <br>
     <label for="customer">Customer Type:</label>
 
     <select name="customer" id="job">
-        <option value="">select job type</option>
+    <option value="">select job type</option>
     <option value="government">government</option>
     <option value="Private">Private</option>
     <option value="Self Employee">Self Employee</option>
@@ -138,85 +143,185 @@
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <script type="text/javascript">
-	            $(document).ready(function(){
+          // mobile number otp verificationdocu
+          function sendOtp(){
+          
+          var number=jQuery('#number').val();
+          if(isNaN(number) || number==""){
+            jQuery("#numberErr").html("This is rquired number");
+            return false;
+          }
+          else{
+            jQuery("#numberErr").hide();
+          }
+          jQuery.ajax({
+            method :'POST',
+            url:'api/send_otp.php',
+            data:{number:number},
+            success:function(result){
+              if(result=='yes'){
+                jQuery('.second_box').show();
+                jQuery('.first_box').html("Resend OTP");
+                alert("send otp on you mobile");
+              }
+              if(result=='updated'){
+                jQuery('.first_box').html("Resend OTP");
+              }
+              
+            }
+          });
+        }
+      function submit_otp(){
+        var number=jQuery('#number').val();
+      	var otp=jQuery('#otp').val();
+      	jQuery.ajax({
+          method:'POST',
+      		url:'api/check_otp.php',
+      		data:{
+            number:number,
+            otp : otp
+          },
+      		success:function(result){
+      			if(result=='verified'){
+              jQuery('.second_box').hide();
+              jQuery('.first_box').hide();
+              jQuery('#disabled_btn').html("verified");
+              jQuery('#disabled_btn').css({"background-color" : "green"});
+              jQuery('#disabled_btn').show();
+      			}
+      			if(result=='not_match'){
+      				jQuery("#numberErr").html("OTP not match");
+              
+      			}
+          
+      		}
+      	});
+      }
+
+      $(document).ready(function(){
+
+        // reload data from retrive file
+          function loadData(){
+              
+              $.ajax({
+                  url : "retrive.php",
+                  type : "POST",
+                  success: 
+                      function(data){
+                          $("#data-container").html(data);
+                      
+                  }
+                  });
+          }
+          loadData();
+
+        // customer registration
+        $("#submit").click(function(event) {
+        event.preventDefault();
+
+        let name = $("#name").val();
+        let email = $("#email").val();
+        let number = $("#number").val();
+        let password = $("#password").val();
+        let date = $("#date").val();
+        let address = $("#address").val();
+        // var gender = $(".gender").val();
+
+        var ele = document.getElementsByName('gender');
+        var gen_value = "";
+
+        for (i = 0; i < ele.length; i++) {
+                ele[i].checked ? gen_value=ele[i].value : "error";
+        } 
+                
+        var job = $("#job").val();
+        if(name==""){
+          $("#nameerr").html("This is required field");
+          return false;
+        }
+        else{
+          $("#nameerr").hide(); 
+        }
+
+        if(email==""){
+          $("#emailErr").html("This is required field");
+          return false;
+        }
+        else{
+          $("#emailErr").hide(); 
+        }
+        if(number==""){
+          $("#numberErr").html("This is required field");
+          return false;
+        }
+        else{
+          $("#numberErr").hide(); 
+        }
+        if(password==""){
+          $("#passwordErr").html("This is required field");
+          return false;
+        }
+        else{
+          $("#passwordErr").hide(); 
+        }
+        if(date==""){
+          $("#dateErr").html("This is required field");
+          return false;
+        }
+        else{
+          $("#dateErr").hide(); 
+        }
+        if(address==""){
+          $("#addressErr").html("This is required field");
+          return false;
+        }
+        else{
+          $("#addressErr").hide(); 
+        }
+        if(gen_value==""){
+          $("#genderErr").html("This is required field");
+          return false;
+        }
+        else{
+          $("#genderErr").hide(); 
+        }
 
 
+        $.ajax({
+        method: "POST",
+        url: "api/insert.php",
+        data: {
+              action:"insert", 
+              fname:name,
+              email:email,
+              number:number,
+              password:password,
+              dob:date,
+              address : address,
+              gender:gen_value,
+              job : job
+        },
+        
+        success: function(data){
+                if(data == 1){
+                    alert("Email Already exists");
+                    $("#basic-form").trigger("reset");
+                }
+                else{
+                    // alert(data);
+                  $("#basic-form").trigger("reset");
+                  // loadData();
+                  window.location.href = "customer-login.html";
 
 
-	            	// reload data from retrive file
-	                function loadData(){
-	                    
-	                    $.ajax({
-	                        url : "retrive.php",
-	                        type : "POST",
-	                        success: 
-	                            function(data){
-	                                $("#data-container").html(data);
-	                            
-	                        }
-	                       });
-	                }
-	                loadData();
-
-                	  // insert data
-	            	$("#submit").click(function(event) {
-				    event.preventDefault();
-
-				        let name = $("#name").val();
-				        let email = $("#email").val();
-				        let number = $("#number").val();
-				        let password = $("#password").val();
-				        let date = $("#date").val();
-				        let address = $("#address").val();
-				        var gender = $(".gender").val();
-
-				        var ele = document.getElementsByName('gender');
-				        var gen_value = "";
-
-				        for (i = 0; i < ele.length; i++) {
-				                ele[i].checked ? gen_value=ele[i].value : "error";
-				        } 
-                        
-                        var job = $("#job").val();
-
-						  $.ajax({
-						  method: "POST",
-						  url: "api/insert.php",
-						  data: {
-						        action:"insert", 
-						        fname:name,
-						        email:email,
-						        number:number,
-						        password:password,
-						        dob:date,
-						        address : address,
-						        gender:gen_value,
-                                job : job
-						    },
-						    
-						    success: function(data){
-                                if(data == 1){
-                                    alert("Email Already exists");
-                                    $("#basic-form").trigger("reset");
-
-
-                                }
-                                else{
-                                    alert(data);
-                                $("#basic-form").trigger("reset");
-                                // loadData();
-                                window.location.href = "customer-login.html";
-
-
-                                }
+                }
 
 						    }
 						});
 
 					});	
 
-
-	            	//Delete data from database
+	        //Delete data from database
 					$(document).on('click','.delbutton',function(){
 						var studentId = $(this).data('id');
 						$.ajax({
@@ -254,40 +359,31 @@
 					$(document).on('click','#update',function(){
 
 						var student_id = $('#student-id').val();
-                        var name =$('#update_name').val();
-                        var email = $('#update_email').val();
-                        var number = $('#update_number').val();
-                        var password = $('#update_password').val();
-                        var date = $('#update_date').val();
-                        var address = $('#update_address').val();
-                        var gender =$("input[name='gender']:checked").val();
-                        $.ajax({
-                        url: "update.php",
-                        type : "POST",
-                      	data: {
-                         updateid:student_id, 
-                         fname:name,
-                         email:email,
-                         number:number, 
-                         password:password, 
-                         dob:date, 
-                         address : address,
-                         gender : gender
-                        }
-
-
-
-
+            var name =$('#update_name').val();
+            var email = $('#update_email').val();
+            var number = $('#update_number').val();
+            var password = $('#update_password').val();
+            var date = $('#update_date').val();
+            var address = $('#update_address').val();
+            var gender =$("input[name='gender']:checked").val();
+            $.ajax({
+            url: "update.php",
+            type : "POST",
+            data: {
+              updateid:student_id, 
+              fname:name,
+              email:email,
+              number:number, 
+              password:password, 
+              dob:date, 
+              address : address,
+              gender : gender
+            }
 					  }).done(function(data){
 					  	// alert(data);
 					  });
 
 					})
-
-
-
-
-
 
 
 			// close document

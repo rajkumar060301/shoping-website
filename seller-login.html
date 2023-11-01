@@ -3,28 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login page</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>Seller Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
 
+        #form-div {
+            width: 50%;
+            margin: 100px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 24px;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #555;
+            font-size: 18px;
+        }
+
+        input[type="email"],
+        input[type="password"] {
+            width: 30%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            background-color: #ff7f50;
+            color: #fff;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ff5733;
+        }
+
+        .error {
+            color: #FF0000;
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
     <div id="form-div">
-        <h3>Welcome to seller login page</h3>
+        <h3>Welcome to the Seller Login Page</h3>
 
         <form action="api/seller-login.php" method="post">
-            <label>username</label><span class="error">*</span><br>
-            <input type="email" name="username" required>
+            <label for="username">Username</label><span class="error">*</span><br>
+            <input type="email" id="username" name="username" required>
             <br>
-            <label>Password</label><span class="error">*</span><br>
-            <input type="password" name="password" required>
+            <label for="password">Password</label><span class="error">*</span><br>
+            <input type="password" id="password" name="password" required>
             <br><br>
             <input type="submit" name="sub" value="LOG IN">
             <br>
-            <p>Don't have an account ?<a href="./seller-register.html"> register here</a></p>
-
+            <p>Don't have an account? <a href="./seller-register.html">Register here</a></p>
         </form>
     </div>
-
-    
 </body>
 </html>

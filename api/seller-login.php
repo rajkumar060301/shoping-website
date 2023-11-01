@@ -10,9 +10,9 @@ $read_query = "SELECT * from `seller` where `seller_email`='".$user."' and `sell
    $result = $myConnection->query($read_query);
    if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
-        $_SESSION['teamID']=$row['id'];
+        $_SESSION['sellerID']=$row['seller_id'];
 
-               header("location:../index.php");
+               header("location:../seller_dashboard.php");
 
             }
             else{

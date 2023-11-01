@@ -16,17 +16,17 @@ a:hover{text-decoration:none; color:white}
 
 
 
-<script>
-$(document).ready(function () {
-    $('#example').DataTable();
-});
+    <script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
 
-</script>
+    </script>
 
-</head>
-<body>
-  
-<table id="example" class="display" style="width:100%;text-align:center">
+    </head>
+    <body>
+    
+    <table id="example" class="display" style="width:100%;text-align:center">
     <thead>
         <tr>
             <th style="width: 10%;">Product Image</th>
@@ -43,32 +43,36 @@ $(document).ready(function () {
 
         <?php
         include '../config/config.php';
-
-        $query = "select * from cart";
+        session_start();
+        $cus_id = $_SESSION['teamID'];
+        $query = "select * from `cart` where `cus_id`='$cus_id'";
         $sum = 0;
         $result = mysqli_query($myConnection,$query);
-                if(mysqli_num_rows($result)>0){
+            if(mysqli_num_rows($result)>0){
 
-                    while($row = mysqli_fetch_assoc($result)){
+                while($row = mysqli_fetch_assoc($result)){
 
-                        ?>
+                    ?>
 
-                <tr>
-                <td><img src="<?php echo $row["product_img"];?>" style="height:100px;width:100px"></td>
-                    <td><?php echo $row["product_id"];?></td>
-                    <td><?php echo $row["product_name"];?></td>
-                    <td><?php echo $row["product_description"];?></td>
-                    <td><?php echo $row["product_quantity"];?></td>
-                    <td><?php echo $row["product_cost"];?></td>
-                    <?php $sum += $row["product_cost"];?>
-                    <td><button  data-id="<?php echo $row['product_id']; ?>" class="btn btn-danger delbutton">Remove</button></td>
+            <tr>
+            <td><img src="<?php echo $row["product_img"];?>" style="height:100px;width:100px"></td>
+                <td><?php echo $row["product_id"];?></td>
+                <td><?php echo $row["product_name"];?></td>
+                <td><?php echo $row["product_description"];?></td>
+                <td><?php echo $row["product_quantity"];?></td>
+                <td><?php echo $row["product_cost"];?></td>
+                <?php $sum += $row["product_cost"];?>
+                <td><button  data-id="<?php echo $row['product_id']; ?>" class="btn btn-danger delbutton">Remove</button></td>
             </tr>
  
             <?php
 
                     }
-                    //  echo $sum;
-                    echo "<tr><td colspan='5' style='color: red;background-color:yellow;'>Total Amount</td><td class='btn btn-success' style='color: red;'> $sum</td></tr>";
+                    echo "<tr>
+                    <td colspan='5' style='color: red;background-color:yellow;'>Total Amount</td>
+                    <td  class='btn btn-success' style='color: red;'> $sum</td>
+                    <td  class='btn-success' style='color: red;'><a href='./card.php'>BUY NOW</a></td>
+                    </tr>";
 
             echo "</tbody>";
 
